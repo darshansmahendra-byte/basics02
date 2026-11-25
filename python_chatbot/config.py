@@ -1,13 +1,18 @@
 import os
 from dotenv import load_dotenv
 
-# Load settings from the .env file
 load_dotenv()
 
-# Read the API key securely
-API_KEY = os.getenv("OPENAI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-if API_KEY:
-    print("AI API key found!")
+if GEMINI_API_KEY:
+    print("Gemini API key found!")
 else:
-    print("No API key found. Running in local mode.")
+    print("Gemini API key missing!")
+    [theme]
+base = "dark"
+primaryColor = "#7c83ff"
+backgroundColor = "#0b1020"
+secondaryBackgroundColor = "#141b33"
+textColor = "#e8ecf8"
+font = "sans serif"

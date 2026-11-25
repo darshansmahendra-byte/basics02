@@ -1,37 +1,40 @@
 
-previous_messages = []
+from google import genai
+from google.genai import types
+from config import GEMINI_API_KEY
+
+# Connect to Gemini
+client = genai.Client(api_key=GEMINI_API_KEY)
+
+MODEL = "gemini-3.6-flash"
+
+# Give your chatbot a personality
+def create_chat():
+    return client.chats.create(
+        model=MODEL,
+        config=types.GenerateContentConfig(
+            system_instruction=(
+                "You are Nova AI,created by Darshan, a friendly and intelligent "
+                "assistant. Answer clearly in simple English."
+            )
+        )
+    )
+
+
+chat = create_chat()
 
 
 def get_reply(message):
-    message = message.lower().strip()
+    global chat
 
-    if "hello" in message or "hi" in message:
-        return "Hello! Welcome to Darshan AI. How can I help you?"
+    try:
+        response = chat.send_message(message)
+        return response.text or "I couldn't generate a text response."
 
-    elif "your name" in message:
-        return "My name is Darshan AI, your Python chatbot!"
-
-    elif "python" in message:
-        return "Python is a popular programming language used in AI, automation and web development."
-
-    elif "how are you" in message:
-        return "I am doing great! Thanks for asking."
-
-    elif "help" in message:
-        return "I can answer simple questions about Python and chat with you."
-
-    elif "time" in message:
-        return "I am running locally on your computer."
-    elif "jena milk price" in message:
-        return "20rs per liter."
-
-    elif "bye" in message:
-        return "Goodbye! Have a wonderful day."
-
-    else:
-        return "Interesting question! I am still learning. Try asking me about Python."
+    except Exception as error:
+        return f"Gemini error: {error}"
 
 
 def reset_chat():
-    global previous_messages
-    previous_messages = []
+    global chat
+    chat = create_chat()
